@@ -1,7 +1,6 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace ApiBasicsService.Models;
+namespace ApiTome.Models;
 
 public class City
 {

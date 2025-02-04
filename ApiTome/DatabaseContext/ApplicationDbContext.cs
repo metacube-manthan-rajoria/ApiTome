@@ -1,7 +1,7 @@
-using ApiBasicsService.Models;
+using ApiTome.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace ApiBasicsService.DatabaseContext;
+namespace ApiTome.DatabaseContext;
 
 public class ApplicationDbContext : DbContext
 {
