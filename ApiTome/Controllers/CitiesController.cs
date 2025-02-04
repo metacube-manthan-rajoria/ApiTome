@@ -4,7 +4,7 @@ namespace ApiTome.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class WeatherController : ControllerBase {
+public class CitiesController : ControllerBase {
     [HttpGet]
     public string Method(){
         return "wadawd";

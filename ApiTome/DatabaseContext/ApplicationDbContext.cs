@@ -17,8 +17,7 @@ public class ApplicationDbContext : DbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<City>().HasData(
             new City(){CityID = Guid.Parse("BF160CFD-E693-4C6A-9417-037B4501EC9B"), CityName = "New York"},
-            new City(){CityID = Guid.Parse("858462EF-5587-8DB3-39293869"), CityName = "Jaipur"}
+            new City(){CityID = Guid.Parse("858462EF-5587-48D5-8DB3-392938699F42"), CityName = "Jaipur"}
         );
     }
-
 }
