@@ -1,6 +1,7 @@
 using System.Data.Common;
 using ApiTome.DatabaseContext;
 using ApiTome.Models;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,41 +32,41 @@ public class CitiesController : ControllerBase {
     }
 
     [HttpPost]
-    public string PostCity([Bind(nameof(City.CityID), nameof(City.CityName))] City city){
-        if(_context.Cities == null) return "DbContext is Null";
+    public IActionResult PostCity([Bind(nameof(City.CityID), nameof(City.CityName))] City city){
+        if(_context.Cities == null) return StatusCode(500, "DbContext is Null");
         _context.Cities.Add(city);
         try{
             _context.SaveChanges();
-            return "Post Request Successful";
+            return Ok("Post Request Successful");
         }catch(DbException e){
-            return "We ran into an error while saving...\n" + e.Message;
+            return StatusCode(500, "We ran into an error while saving...\n" + e.Message);
         }
     }
 
     [HttpPut("{id}")]
-    public string PutCity(Guid id,[Bind(nameof(City.CityID), nameof(City.CityName))] City city){
-        if(id != city.CityID) return "Error 400";
+    public IActionResult PutCity(Guid id,[Bind(nameof(City.CityID), nameof(City.CityName))] City city){
+        if(id != city.CityID) return BadRequest("Invalid CityID");
 
         _context.Cities.Update(city);
         try{
             _context.SaveChanges();
-            return "Put Request Successful";
+            return Ok("Put Request Successful");
         }catch(DbUpdateException){
-            return "We ran into an error while updating...";
+            return StatusCode(500, "We ran into an error while updating...");
         }
     }
 
     [HttpDelete("{id}")]
-    public string DeleteCity(Guid id){
+    public IActionResult DeleteCity(Guid id){
         City? city = _context.Cities.Find(id);
-        if(city == null) return "No such city";
+        if(city == null) return StatusCode(500, "DbContext is Null");
 
         _context.Cities.Remove(city);
         try{
             _context.SaveChanges();
-            return "Delete Request Successful";
+            return Ok("Delete Request Successful");
         }catch(DbException e){
-            return "We ran into an error while deleting...\n" + e.Message;
+            return StatusCode(500, "We ran into an error while deleting...\n" + e.Message);
         }
     }
 }
