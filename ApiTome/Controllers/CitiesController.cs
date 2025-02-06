@@ -17,26 +17,27 @@ public class CitiesController : ControllerBase {
         _context = context;
     }
 
-    [HttpGet]
-    public IEnumerable<City> GetCities(){
+    [HttpGet("fetchcities")]
+    public async Task<ActionResult<IEnumerable<City>>> GetCities(){
         if(_context.Cities == null) return null;
+        List<City> cities = await _context.Cities.ToListAsync();
         
-        return _context.Cities.ToList();
+        return cities;
     }
 
     [HttpGet("{id}")]
-    public City? GetCity(Guid id){
+    public async Task<ActionResult<City?>> GetCity(Guid id){
         if(_context.Cities == null) return null;
 
-        return _context.Cities.Find(id);
+        return await _context.Cities.FindAsync(id);
     }
 
     [HttpPost]
-    public IActionResult PostCity([Bind(nameof(City.CityID), nameof(City.CityName))] City city){
+    public async Task<IActionResult> PostCity([Bind(nameof(City.CityID), nameof(City.CityName))] City city){
         if(_context.Cities == null) return StatusCode(500, "DbContext is Null");
-        _context.Cities.Add(city);
+        await _context.Cities.AddAsync(city);
         try{
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return Ok("Post Request Successful");
         }catch(DbException e){
             return StatusCode(500, "We ran into an error while saving...\n" + e.Message);
@@ -44,12 +45,12 @@ public class CitiesController : ControllerBase {
     }
 
     [HttpPut("{id}")]
-    public IActionResult PutCity(Guid id,[Bind(nameof(City.CityID), nameof(City.CityName))] City city){
+    public async Task<IActionResult> PutCity(Guid id,[Bind(nameof(City.CityID), nameof(City.CityName))] City city){
         if(id != city.CityID) return BadRequest("Invalid CityID");
 
-        _context.Cities.Update(city);
+        _context.Entry(city).State = EntityState.Modified;
         try{
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return Ok("Put Request Successful");
         }catch(DbUpdateException){
             return StatusCode(500, "We ran into an error while updating...");
@@ -57,13 +58,13 @@ public class CitiesController : ControllerBase {
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteCity(Guid id){
-        City? city = _context.Cities.Find(id);
+    public async Task<IActionResult> DeleteCity(Guid id){
+        City? city = await _context.Cities.FindAsync(id);
         if(city == null) return StatusCode(500, "DbContext is Null");
 
         _context.Cities.Remove(city);
         try{
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return Ok("Delete Request Successful");
         }catch(DbException e){
             return StatusCode(500, "We ran into an error while deleting...\n" + e.Message);
