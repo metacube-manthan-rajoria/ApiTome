@@ -19,7 +19,7 @@ public class CitiesController : ControllerBase {
 
     [HttpGet("fetchcities")]
     public async Task<ActionResult<IEnumerable<City>>> GetCities(){
-        if(_context.Cities == null) return null;
+        if(_context.Cities == null) return StatusCode(500);
         List<City> cities = await _context.Cities.ToListAsync();
         
         return cities;
@@ -27,7 +27,7 @@ public class CitiesController : ControllerBase {
 
     [HttpGet("{id}")]
     public async Task<ActionResult<City?>> GetCity(Guid id){
-        if(_context.Cities == null) return null;
+        if(_context.Cities == null) return StatusCode(500);
 
         return await _context.Cities.FindAsync(id);
     }
