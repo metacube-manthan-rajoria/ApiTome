@@ -52,8 +52,8 @@ public class CitiesController : ControllerBase {
         try{
             await _context.SaveChangesAsync();
             return Ok("Put Request Successful");
-        }catch(DbUpdateException){
-            return StatusCode(500, "We ran into an error while updating...");
+        }catch(DbUpdateException e){
+            return StatusCode(500, "We ran into an error while updating..." + e.Message);
         }
     }
 
