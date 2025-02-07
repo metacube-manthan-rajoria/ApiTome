@@ -1,7 +1,6 @@
 using System.Data.Common;
 using ApiTome.DatabaseContext;
 using ApiTome.Models;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -35,6 +34,7 @@ public class CitiesController : ControllerBase {
     [HttpPost]
     public async Task<IActionResult> PostCity([Bind(nameof(City.CityID), nameof(City.CityName))] City city){
         if(_context.Cities == null) return StatusCode(500, "DbContext is Null");
+        city.CityID = Guid.NewGuid();
         await _context.Cities.AddAsync(city);
         try{
             await _context.SaveChangesAsync();
