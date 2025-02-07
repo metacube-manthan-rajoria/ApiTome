@@ -52,7 +52,7 @@
     </table>
 
     <script>
-        const apiUrl = 'https://localhost:7081/api/cities/';
+        const apiUrl = 'https://localhost:7081/api/cities';
 
         $(document).ready(function () {
             initialize();
@@ -60,14 +60,14 @@
             $('#cityForm').submit(function (event) {
                 event.preventDefault();
                 const city = {
-                    name: $('#name').val()
+                    "CityName": $('#name').val()
                 };
                 addCity(city);
             });
         });
 
         function initialize() {
-            $.get(apiUrl+"fetchcities", function (data) {
+            $.get(apiUrl+"/fetchcities", function (data) {
                 const cityData = $('#cityTable tbody');
                 cityData.empty();
                 data.forEach(city => {
@@ -76,8 +76,8 @@
                         <td>${city.cityID}</td>
                         <td>${city.cityName}</td>
                         <td>
-                            <button onclick="editFriend(${city.cityID})">Edit</button>
-                            <button onclick="deleteFriend(${city.cityID})">Delete</button>
+                            <button onclick="editCity('${city.cityID}')">Edit</button>
+                            <button onclick="deleteCity('${city.cityID}')">Delete</button>
                         </td>
                         </tr>`;
                     cityData.append(row);
@@ -99,6 +99,16 @@
                 error: function (jqXHR, textStatus, errorThrown) {
                     console.error("Error adding city:", textStatus, errorThrown);
                     alert("There was an error adding the friend. Please try again.");
+                }
+            });
+        }
+
+        function deleteCity(id) {
+            $.ajax({
+                url: `${apiUrl}/${id}`,
+                type: 'DELETE',
+                success: function () {
+                    initialize();
                 }
             });
         }
