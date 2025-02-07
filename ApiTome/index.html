@@ -34,8 +34,10 @@
 
     <h2>Add New City</h2>
     <form id="cityForm">
+        <input type="hidden" id="id" name="id">
         <label for="name">Name:</label>
         <input type="text" id="name" name="CityName" required>
+        <button id="updateButton" type="button">Update City</button>
         <button type="submit">Add City</button>
     </form>
 
@@ -64,6 +66,12 @@
                 };
                 addCity(city);
             });
+
+            $('#updateButton').click(
+                ()=>{
+                    updateCity();
+                }
+            );
         });
 
         function initialize() {
@@ -95,6 +103,32 @@
                 success: function () {
                     initialize();
                 }
+            });
+        }
+
+        function editCity(id){
+            $.get(`${apiUrl}/${id}`, function (city) {
+                $('#id').val(city.cityID);
+                $('#name').val(city.cityName);
+            });
+        }
+
+        function updateCity(){
+            $.ajax({
+                url: apiUrl,
+                type: 'PUT',
+                contentType: 'application/json',
+                dataType: "json",
+                data: JSON.stringify(city),
+                success: function () {
+                    initialize();
+                }
+            });
+            $.put(`${apiUrl}/${id}`, function (city) {
+                $('#id').val();
+                $('#name').val();
+
+                
             });
         }
 
