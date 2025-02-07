@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>ApiTome</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table,
+        th,
+        td {
+            border: 1px solid black;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Cities</h1>
+
+    <h2>Add New City</h2>
+    <form id="cityForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <button type="submit">Add City</button>
+    </form>
+
+    <h2>Friend List</h2>
+    <table id="friendTable">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <script>
+        const apiUrl = 'https://localhost:7081/api/cities/';
+
+        $(document).ready(function () {
+            loadFriends();
+
+            $('#cityForm').submit(function (event) {
+                event.preventDefault();
+                const city = {
+                    name: $('#name').val()
+                };
+                addFriend(city);
+            });
+
+            $.ajax({
+                type: "GET",
+                url: apiUrl + "fetchcities",
+                contentType: "application/json; charset=utf-8",
+                dataType: "jsonp",
+                crossDomain: true,
+                success: function (response) {
+                    Console.log(response);
+
+                }
+            })
+        });
+
+        function loadFriends() {
+            $.ajax({
+                type: "GET",
+                url: apiUrl + "fetchcities",
+                contentType: "application/json; charset=utf-8",
+                dataType: "jsonp",
+                crossDomain: true,
+                success: function (response) {
+                    Console.log(response);
+                    const friendTableBody = $('#cityTable tbody');
+                    friendTableBody.empty();
+                    response.forEach(friend => {
+                        const row = `<tr>
+                        <td>${friend.CityID}</td>
+                        <td>${friend.CityName}</td>
+                        <td>
+                            <button onclick="editFriend(${friend.CityID})">Edit</button>
+                            <button onclick="deleteFriend(${friend.CityID})">Delete</button>
+                        </td>
+                        </tr>`;
+                        friendTableBody.append(row);
+                    });
+
+                }
+            })
+            $.get(apiUrl + "fetchcities", function (data) {
+                const friendTableBody = $('#cityTable tbody');
+                friendTableBody.empty();
+                data.forEach(friend => {
+                    const row = `<tr>
+                        <td>${friend.CityID}</td>
+                        <td>${friend.CityName}</td>
+                        <td>
+                            <button onclick="editFriend(${friend.CityID})">Edit</button>
+                            <button onclick="deleteFriend(${friend.CityID})">Delete</button>
+                        </td>
+                    </tr>`;
+                    friendTableBody.append(row);
+                });
+            });
+        }
+
+        function addFriend(friend) {
+            console.log(friend);
+            $.ajax({
+                url: apiUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                dataType: "jsonp",
+                data: JSON.stringify(friend),
+                success: function () {
+                    loadFriends();
+                    $('#cityForm')[0].reset();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.error("Error adding friend:", textStatus, errorThrown);
+                    alert("There was an error adding the friend. Please try again.");
+                }
+            });
+        }
+
+        function uploadFriend(friend) {
+            console.log(friend);
+            $.ajax({
+                url: apiUrl,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(friend),
+                success: function () {
+                    loadFriends();
+                    $('#cityForm')[0].reset();
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
