@@ -114,8 +114,16 @@
         }
 
         function updateCity(){
+            let id = $('#id').val();
+            let name = $('#name').val();
+
+            const city = {
+                "CityID": id,
+                "CityName": name
+            };
+
             $.ajax({
-                url: apiUrl,
+                url: apiUrl+"/"+id,
                 type: 'PUT',
                 contentType: 'application/json',
                 dataType: "json",
@@ -123,12 +131,6 @@
                 success: function () {
                     initialize();
                 }
-            });
-            $.put(`${apiUrl}/${id}`, function (city) {
-                $('#id').val();
-                $('#name').val();
-
-                
             });
         }
 
