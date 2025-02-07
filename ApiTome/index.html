@@ -94,11 +94,6 @@
                 data: JSON.stringify(city),
                 success: function () {
                     initialize();
-                    $('#cityForm')[0].reset();
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.error("Error adding city:", textStatus, errorThrown);
-                    alert("There was an error adding the friend. Please try again.");
                 }
             });
         }
