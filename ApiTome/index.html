@@ -35,7 +35,7 @@
     <h2>Add New City</h2>
     <form id="cityForm">
         <label for="name">Name:</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="name" name="CityName" required>
         <button type="submit">Add City</button>
     </form>
 
@@ -83,64 +83,22 @@
                     cityData.append(row);
                 });
             });
-            // $.ajax({
-            //     type: "GET",
-            //     url: apiUrl + "fetchcities",
-            //     contentType: "application/json; charset=utf-8",
-            //     dataType: "jsonp",
-            //     crossDomain: true,
-            //     success: function (response) {
-            //         console.log(response);
-            //     }
-            // });
-
-            
-
-            // const cityData = $('#cityTable tbody');
-            // cityData.empty();
-            // res.forEach(city => {
-            //     const row = `
-            //         <tr>
-            //         <td>${city.CityID}</td>
-            //         <td>${city.CityName}</td>
-            //         <td>
-            //             <button onclick="editCity(${city.CityID})">Edit</button>
-            //             <button onclick="deleteCity(${city.CityID})">Delete</button>
-            //         </td>
-            //         </tr>`;
-            //     cityData.append(row);
-            // });
         }
 
-        function addCity(friend) {
-            console.log(friend);
+        function addCity(city) {
             $.ajax({
                 url: apiUrl,
                 type: 'POST',
                 contentType: 'application/json',
-                dataType: "jsonp",
-                data: JSON.stringify(friend),
+                dataType: "json",
+                data: JSON.stringify(city),
                 success: function () {
-                    loadFriends();
+                    initialize();
                     $('#cityForm')[0].reset();
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
-                    console.error("Error adding friend:", textStatus, errorThrown);
+                    console.error("Error adding city:", textStatus, errorThrown);
                     alert("There was an error adding the friend. Please try again.");
-                }
-            });
-        }
-
-        function uploadCity(friend) {
-            console.log(friend);
-            $.ajax({
-                url: apiUrl,
-                type: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(friend),
-                success: function () {
-                    loadFriends();
-                    $('#cityForm')[0].reset();
                 }
             });
         }
