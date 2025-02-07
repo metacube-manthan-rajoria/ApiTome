@@ -40,7 +40,7 @@
     </form>
 
     <h2>Friend List</h2>
-    <table id="friendTable">
+    <table id="cityTable">
         <thead>
             <tr>
                 <th>Id</th>
@@ -55,30 +55,29 @@
         const apiUrl = 'https://localhost:7081/api/cities/';
 
         $(document).ready(function () {
-            loadFriends();
+            initialize();
 
             $('#cityForm').submit(function (event) {
                 event.preventDefault();
                 const city = {
                     name: $('#name').val()
                 };
-                addFriend(city);
+                addCity(city);
             });
 
-            $.ajax({
-                type: "GET",
-                url: apiUrl + "fetchcities",
-                contentType: "application/json; charset=utf-8",
-                dataType: "jsonp",
-                crossDomain: true,
-                success: function (response) {
-                    Console.log(response);
-
-                }
-            })
+            // $.ajax({
+            //     type: "GET",
+            //     url: apiUrl + "fetchcities",
+            //     contentType: "application/json; charset=utf-8",
+            //     dataType: "jsonp",
+            //     crossDomain: true,
+            //     success: function (response) {
+            //         Console.log(response);
+            //     }
+            // })
         });
 
-        function loadFriends() {
+        function initialize() {
             $.ajax({
                 type: "GET",
                 url: apiUrl + "fetchcities",
@@ -86,41 +85,27 @@
                 dataType: "jsonp",
                 crossDomain: true,
                 success: function (response) {
-                    Console.log(response);
-                    const friendTableBody = $('#cityTable tbody');
-                    friendTableBody.empty();
-                    response.forEach(friend => {
-                        const row = `<tr>
-                        <td>${friend.CityID}</td>
-                        <td>${friend.CityName}</td>
-                        <td>
-                            <button onclick="editFriend(${friend.CityID})">Edit</button>
-                            <button onclick="deleteFriend(${friend.CityID})">Delete</button>
-                        </td>
-                        </tr>`;
-                        friendTableBody.append(row);
+                    Console.log("awdawdawd");
+                    const cityData = $('#cityTable tbody');
+                    cityData.empty();
+                    response.forEach(city => {
+                        const row = `
+                            <tr>
+                            <td>${city.CityID}</td>
+                            <td>${city.CityName}</td>
+                            <td>
+                                <button onclick="editCity(${city.CityID})">Edit</button>
+                                <button onclick="deleteCity(${city.CityID})">Delete</button>
+                            </td>
+                            </tr>`;
+                        cityData.append(row);
                     });
 
                 }
             })
-            $.get(apiUrl + "fetchcities", function (data) {
-                const friendTableBody = $('#cityTable tbody');
-                friendTableBody.empty();
-                data.forEach(friend => {
-                    const row = `<tr>
-                        <td>${friend.CityID}</td>
-                        <td>${friend.CityName}</td>
-                        <td>
-                            <button onclick="editFriend(${friend.CityID})">Edit</button>
-                            <button onclick="deleteFriend(${friend.CityID})">Delete</button>
-                        </td>
-                    </tr>`;
-                    friendTableBody.append(row);
-                });
-            });
         }
 
-        function addFriend(friend) {
+        function addCity(friend) {
             console.log(friend);
             $.ajax({
                 url: apiUrl,
@@ -139,7 +124,7 @@
             });
         }
 
-        function uploadFriend(friend) {
+        function uploadCity(friend) {
             console.log(friend);
             $.ajax({
                 url: apiUrl,
