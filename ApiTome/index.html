@@ -40,7 +40,7 @@
     </form>
 
     <h2>Friend List</h2>
-    <table id="cityTable">
+    <table id="cityTable" class="table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -64,7 +64,25 @@
                 };
                 addCity(city);
             });
+        });
 
+        function initialize() {
+            $.get(apiUrl+"fetchcities", function (data) {
+                const cityData = $('#cityTable tbody');
+                cityData.empty();
+                data.forEach(city => {
+                    const row = `
+                        <tr>
+                        <td>${city.cityID}</td>
+                        <td>${city.cityName}</td>
+                        <td>
+                            <button onclick="editFriend(${city.cityID})">Edit</button>
+                            <button onclick="deleteFriend(${city.cityID})">Delete</button>
+                        </td>
+                        </tr>`;
+                    cityData.append(row);
+                });
+            });
             // $.ajax({
             //     type: "GET",
             //     url: apiUrl + "fetchcities",
@@ -72,37 +90,26 @@
             //     dataType: "jsonp",
             //     crossDomain: true,
             //     success: function (response) {
-            //         Console.log(response);
+            //         console.log(response);
             //     }
-            // })
-        });
+            // });
 
-        function initialize() {
-            $.ajax({
-                type: "GET",
-                url: apiUrl + "fetchcities",
-                contentType: "application/json; charset=utf-8",
-                dataType: "jsonp",
-                crossDomain: true,
-                success: function (response) {
-                    Console.log("awdawdawd");
-                    const cityData = $('#cityTable tbody');
-                    cityData.empty();
-                    response.forEach(city => {
-                        const row = `
-                            <tr>
-                            <td>${city.CityID}</td>
-                            <td>${city.CityName}</td>
-                            <td>
-                                <button onclick="editCity(${city.CityID})">Edit</button>
-                                <button onclick="deleteCity(${city.CityID})">Delete</button>
-                            </td>
-                            </tr>`;
-                        cityData.append(row);
-                    });
+            
 
-                }
-            })
+            // const cityData = $('#cityTable tbody');
+            // cityData.empty();
+            // res.forEach(city => {
+            //     const row = `
+            //         <tr>
+            //         <td>${city.CityID}</td>
+            //         <td>${city.CityName}</td>
+            //         <td>
+            //             <button onclick="editCity(${city.CityID})">Edit</button>
+            //             <button onclick="deleteCity(${city.CityID})">Delete</button>
+            //         </td>
+            //         </tr>`;
+            //     cityData.append(row);
+            // });
         }
 
         function addCity(friend) {
@@ -138,6 +145,7 @@
             });
         }
     </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 
 </html>
