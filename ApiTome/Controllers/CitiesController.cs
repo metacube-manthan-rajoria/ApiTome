@@ -1,12 +1,15 @@
 using System.Data.Common;
 using ApiTome.DatabaseContext;
 using ApiTome.Models;
+using ApiTome.Filters;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiTome.Controllers;
 
 [ApiController]
+[DataFilter]
 [Route("api/[controller]")]
 public class CitiesController : ControllerBase {
 
@@ -16,6 +19,7 @@ public class CitiesController : ControllerBase {
         _context = context;
     }
 
+    [OutputCache(Duration = 10)]
     [HttpGet("fetchcities")]
     public async Task<ActionResult<IEnumerable<City>>> GetCities(){
         if(_context.Cities == null) return StatusCode(500);

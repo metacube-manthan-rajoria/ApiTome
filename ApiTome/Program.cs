@@ -1,4 +1,5 @@
 using ApiTome.DatabaseContext;
+using Serilog;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,6 +28,14 @@ builder.Services.AddCors(options =>
                .AllowAnyHeader();
     });
 });
+
+// Added Logger Configuration
+Log.Logger = 
+            new LoggerConfiguration().MinimumLevel.Debug()
+            .WriteTo.File(AppDomain.CurrentDomain.BaseDirectory + "logs/log - .txt", rollingInterval: RollingInterval.Day).CreateLogger();
+
+// Added logger to services
+builder.Logging.Services.AddSerilog();
 
 var app = builder.Build();
 
