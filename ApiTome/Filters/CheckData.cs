@@ -4,16 +4,11 @@ namespace ApiTome.Filters;
 
 public class DataFilter : ActionFilterAttribute
 {
-    private readonly ILogger<DataFilter> _logger;
-
-    public DataFilter(ILogger<DataFilter> logger){
-        _logger = logger;
-    }
-
     public override void OnActionExecuting(ActionExecutingContext filterContext)
     {
-        if(_logger.IsEnabled(LogLevel.Information)){
-            _logger.LogInformation("Model : \n" + filterContext.HttpContext.ToString());
+        if(!filterContext.ModelState.IsValid){
+            Console.WriteLine("Invalid Model State Bitch!");
+            return;
         }
 
         //bool isModelValid = filterContext.ModelState.IsValid;

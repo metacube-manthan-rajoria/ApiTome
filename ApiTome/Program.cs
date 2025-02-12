@@ -32,7 +32,7 @@ builder.Services.AddCors(options =>
 Log.Logger = 
             new LoggerConfiguration().MinimumLevel.Debug()
             .WriteTo.Console()
-            .WriteTo.File(AppDomain.CurrentDomain.BaseDirectory + "logs/log - .txt", rollingInterval: RollingInterval.Day).CreateLogger();
+            .WriteTo.File(AppDomain.CurrentDomain.BaseDirectory + "logs/log - .log", rollingInterval: RollingInterval.Day).CreateLogger();
 
 // Added logger to services
 builder.Logging.Services.AddSerilog();
@@ -45,6 +45,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAllOrigins");
+app.UseHsts();
 app.UseHttpsRedirection();
 
 app.MapControllers();
