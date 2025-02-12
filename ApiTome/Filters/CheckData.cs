@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace ApiTome.Filters;
 
-public class DataFilter : ActionFilterAttribute
+public class CheckData : ActionFilterAttribute
 {
     public override void OnActionExecuting(ActionExecutingContext filterContext)
     {

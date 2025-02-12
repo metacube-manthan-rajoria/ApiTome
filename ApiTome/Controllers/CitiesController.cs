@@ -35,7 +35,7 @@ public class CitiesController : ControllerBase {
     }
 
     [HttpPost]
-    [DataFilter]
+    [CheckData]
     public async Task<IActionResult> PostCity([Bind(nameof(City.CityID), nameof(City.CityName))] City city){
         if(_context.Cities == null) return StatusCode(500, "DbContext is Null");
         city.CityID = Guid.NewGuid();
@@ -49,7 +49,7 @@ public class CitiesController : ControllerBase {
     }
 
     [HttpPut("{id}")]
-    [DataFilter]
+    [CheckData]
     public async Task<IActionResult> PutCity(Guid id,[Bind(nameof(City.CityID), nameof(City.CityName))] City city){
         if(id != city.CityID) return BadRequest("Invalid CityID");
 
