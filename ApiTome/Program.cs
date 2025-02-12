@@ -6,7 +6,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddControllers()
-
 //Json Formatter
 .AddJsonOptions(options =>
 {
@@ -32,6 +31,7 @@ builder.Services.AddCors(options =>
 // Added Logger Configuration
 Log.Logger = 
             new LoggerConfiguration().MinimumLevel.Debug()
+            .WriteTo.Console()
             .WriteTo.File(AppDomain.CurrentDomain.BaseDirectory + "logs/log - .txt", rollingInterval: RollingInterval.Day).CreateLogger();
 
 // Added logger to services
@@ -45,7 +45,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors("AllowAllOrigins");
-app.UseHsts();
 app.UseHttpsRedirection();
 
 app.MapControllers();

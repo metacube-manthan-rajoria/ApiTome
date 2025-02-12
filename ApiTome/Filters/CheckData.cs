@@ -16,7 +16,7 @@ public class DataFilter : ActionFilterAttribute
             _logger.LogInformation("Model : \n" + filterContext.HttpContext.ToString());
         }
 
-        bool isModelValid = filterContext.ModelState.IsValid;
+        //bool isModelValid = filterContext.ModelState.IsValid;
 
         // if (File.Exists(fileUrl))
         // {
@@ -26,17 +26,17 @@ public class DataFilter : ActionFilterAttribute
         //     eventLog.WriteEntry(fileContents, EventLogEntryType.SuccessAudit, 101, 1);
         // }
 
-        if (isModelValid)
-        {
-            Log("OnActionExecuting", filterContext.RouteData);
-        }
+        // if (isModelValid)
+        // {
+        //     Log("OnActionExecuting", filterContext.RouteData);
+        // }
     }
-    
-    private void Log(string methodName, RouteData routeData)
-    {
-        var controllerName = routeData.Values["controller"];
-        var actionName = routeData.Values["action"];
-        var message = String.Format("{0} controller:{1} action:{2}", methodName, controllerName, actionName);
-        _logger.LogInformation(message, "Action Filter Log");
-    }
+
+    // private void Log(string methodName, RouteData routeData)
+    // {
+    //     var controllerName = routeData.Values["controller"];
+    //     var actionName = routeData.Values["action"];
+    //     var message = String.Format("{0} controller:{1} action:{2}", methodName, controllerName, actionName);
+    //     _logger.LogInformation(message, "Action Filter Log");
+    // }
 }

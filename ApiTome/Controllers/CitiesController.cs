@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace ApiTome.Controllers;
 
 [ApiController]
-[DataFilter]
+[ServiceFilter(typeof(DataFilter))]
 [Route("api/[controller]")]
 public class CitiesController : ControllerBase {
 
